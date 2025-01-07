@@ -37,6 +37,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.style.TextOverflow
@@ -60,6 +62,9 @@ fun ProfileScreen(
 ) {
     val currentUser = sessionManager.getUserSession()
 
+    val curUs = remember{
+        mutableStateOf(currentUser)
+    }
 
 
 
@@ -88,7 +93,6 @@ fun ProfileScreen(
                     logOut.invoke()
                     sessionManager.clearSession()
                     authViewModel.entered.value = false
-
                 }
                 .rotate(180f),
             tint = Color.White
@@ -119,7 +123,7 @@ fun ProfileScreen(
 
                 // Приветственный текст с логином пользователя
                 Text(
-                    text = "Welcome, $currentUser!",
+                    text = "Welcome, ${curUs.value}!",
                     style = MaterialTheme.typography.headlineMedium.copy(color = Color.White),
                     textAlign = TextAlign.Center
                 )
